@@ -2,115 +2,117 @@ import React, { cloneElement } from 'react';
 import PropTypes from 'prop-types';
 import { WebView, UIManager, requireNativeComponent } from 'react-native';
 
-export default class extends WebView {
+export default WebView;
 
-  static displayName = 'AdvancedWebView';
+// export default class extends WebView {
 
-  static propTypes = {
-    ...WebView.propTypes,
-    keyboardDisplayRequiresUserAction: PropTypes.bool,
-    allowFileAccessFromFileURLs: PropTypes.bool,
-    hideAccessory: PropTypes.bool,
-    validSchemes: PropTypes.array,
-    disableKeyboardAdjust: PropTypes.bool,
-    contentInsetAdjustmentBehavior: PropTypes.number,
-    userAgent: PropTypes.string
-  };
+//   static displayName = 'AdvancedWebView';
 
-  goForward = () => {
-    UIManager.dispatchViewManagerCommand(
-      this.getWebViewHandle(),
-      UIManager.RNAdvancedWebView.Commands.goForward,
-      null
-    );
-  };
+//   static propTypes = {
+//     ...WebView.propTypes,
+//     keyboardDisplayRequiresUserAction: PropTypes.bool,
+//     allowFileAccessFromFileURLs: PropTypes.bool,
+//     hideAccessory: PropTypes.bool,
+//     validSchemes: PropTypes.array,
+//     disableKeyboardAdjust: PropTypes.bool,
+//     contentInsetAdjustmentBehavior: PropTypes.number,
+//     userAgent: PropTypes.string
+//   };
 
-  goBack = () => {
-    UIManager.dispatchViewManagerCommand(
-      this.getWebViewHandle(),
-      UIManager.RNAdvancedWebView.Commands.goBack,
-      null
-    );
-  };
+//   goForward = () => {
+//     UIManager.dispatchViewManagerCommand(
+//       this.getWebViewHandle(),
+//       UIManager.RNAdvancedWebView.Commands.goForward,
+//       null
+//     );
+//   };
 
-  reload = () => {
-    UIManager.dispatchViewManagerCommand(
-      this.getWebViewHandle(),
-      UIManager.RNAdvancedWebView.Commands.reload,
-      null
-    );
-  };
+//   goBack = () => {
+//     UIManager.dispatchViewManagerCommand(
+//       this.getWebViewHandle(),
+//       UIManager.RNAdvancedWebView.Commands.goBack,
+//       null
+//     );
+//   };
 
-  stopLoading = () => {
-    UIManager.dispatchViewManagerCommand(
-      this.getWebViewHandle(),
-      UIManager.RNAdvancedWebView.Commands.stopLoading,
-      null
-    );
-  };
+//   reload = () => {
+//     UIManager.dispatchViewManagerCommand(
+//       this.getWebViewHandle(),
+//       UIManager.RNAdvancedWebView.Commands.reload,
+//       null
+//     );
+//   };
 
-  postMessage = (data) => {
-    UIManager.dispatchViewManagerCommand(
-      this.getWebViewHandle(),
-      UIManager.RNAdvancedWebView.Commands.postMessage,
-      [String(data)]
-    );
-  };
+//   stopLoading = () => {
+//     UIManager.dispatchViewManagerCommand(
+//       this.getWebViewHandle(),
+//       UIManager.RNAdvancedWebView.Commands.stopLoading,
+//       null
+//     );
+//   };
 
-  injectJavaScript = (data) => {
-    UIManager.dispatchViewManagerCommand(
-      this.getWebViewHandle(),
-      UIManager.RNAdvancedWebView.Commands.injectJavaScript,
-      [data]
-    );
-  };
+//   postMessage = (data) => {
+//     UIManager.dispatchViewManagerCommand(
+//       this.getWebViewHandle(),
+//       UIManager.RNAdvancedWebView.Commands.postMessage,
+//       [String(data)]
+//     );
+//   };
 
-  _onLoadingError = (event) => {
-    event.persist(); // persist this event because we need to store it
-    var { onError, onLoadEnd } = this.props;
-    var result = onError && onError(event);
-    onLoadEnd && onLoadEnd(event);
-    console.warn('Encountered an error loading page', event.nativeEvent);
+//   injectJavaScript = (data) => {
+//     UIManager.dispatchViewManagerCommand(
+//       this.getWebViewHandle(),
+//       UIManager.RNAdvancedWebView.Commands.injectJavaScript,
+//       [data]
+//     );
+//   };
 
-    result !== false && this.setState({
-      lastErrorEvent: event.nativeEvent,
-      viewState: 'ERROR'
-    });
-  };
+//   _onLoadingError = (event) => {
+//     event.persist(); // persist this event because we need to store it
+//     var { onError, onLoadEnd } = this.props;
+//     var result = onError && onError(event);
+//     onLoadEnd && onLoadEnd(event);
+//     console.warn('Encountered an error loading page', event.nativeEvent);
 
-  onLoadingError = (event) => {
-    this._onLoadingError(event);
-  };
+//     result !== false && this.setState({
+//       lastErrorEvent: event.nativeEvent,
+//       viewState: 'ERROR'
+//     });
+//   };
 
-  render() {
-    const wrapper = super.render();
-    const [webview, ...children] = wrapper.props.children;
-    const { hideAccessory, allowFileAccessFromFileURLs, keyboardDisplayRequiresUserAction,
-      disableKeyboardAdjust, contentInsetAdjustmentBehavior, userAgent } = this.props;
+//   onLoadingError = (event) => {
+//     this._onLoadingError(event);
+//   };
 
-    const advancedWebview = (
-      <RNAdvancedWebView
-        {...webview.props}
-        ref="webview"
-        userAgent={userAgent}
-        allowFileAccessFromFileURLs={allowFileAccessFromFileURLs}
-        keyboardDisplayRequiresUserAction={keyboardDisplayRequiresUserAction}
-        hideAccessory={hideAccessory}
-        disableKeyboardAdjust={disableKeyboardAdjust}
-        contentInsetAdjustmentBehavior={contentInsetAdjustmentBehavior}
-      />
-    );
+//   render() {
+//     const wrapper = super.render();
+//     const [webview, ...children] = wrapper.props.children;
+//     const { hideAccessory, allowFileAccessFromFileURLs, keyboardDisplayRequiresUserAction,
+//       disableKeyboardAdjust, contentInsetAdjustmentBehavior, userAgent } = this.props;
 
-    return cloneElement(wrapper, wrapper.props, advancedWebview, ...children);
-  }
-}
+//     const advancedWebview = (
+//       <RNAdvancedWebView
+//         {...webview.props}
+//         ref="webview"
+//         userAgent={userAgent}
+//         allowFileAccessFromFileURLs={allowFileAccessFromFileURLs}
+//         keyboardDisplayRequiresUserAction={keyboardDisplayRequiresUserAction}
+//         hideAccessory={hideAccessory}
+//         disableKeyboardAdjust={disableKeyboardAdjust}
+//         contentInsetAdjustmentBehavior={contentInsetAdjustmentBehavior}
+//       />
+//     );
 
-const RNAdvancedWebView = requireNativeComponent('RNAdvancedWebView', null, {
-  nativeOnly: {
-    allowFileAccessFromFileURLs: true,
-    hideAccessory: true,
-    keyboardDisplayRequiresUserAction: true,
-    contentInsetAdjustmentBehavior: true,
-    userAgent: true
-  }
-})
+//     return cloneElement(wrapper, wrapper.props, advancedWebview, ...children);
+//   }
+// }
+
+// const RNAdvancedWebView = requireNativeComponent('RNAdvancedWebView', null, {
+//   nativeOnly: {
+//     allowFileAccessFromFileURLs: true,
+//     hideAccessory: true,
+//     keyboardDisplayRequiresUserAction: true,
+//     contentInsetAdjustmentBehavior: true,
+//     userAgent: true
+//   }
+// })
